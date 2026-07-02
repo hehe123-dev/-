@@ -471,52 +471,14 @@
   const mask = $("exportMask");
   const maskText = $("exportLoadingText");
 
-  // 下拉菜单切换
-  function setupExportMenu(btnId, dropdownId) {
-    const btn = $(btnId);
-    const dropdown = $(dropdownId);
-    let isOpen = false;
+  // 导出按钮：直接触发 PNG 下载
+  ["btnExport", "btnExportBottom"].forEach(id => {
+    const btn = $(id);
+    if (btn) btn.addEventListener("click", () => handleExport());
+  });
 
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      isOpen = !isOpen;
-      dropdown.classList.toggle("show", isOpen);
-      // 关闭另一个下拉
-      const otherId = dropdownId === "exportDropdown" ? "exportDropdownBottom" : "exportDropdown";
-      $(otherId).classList.remove("show");
-    });
-
-    // 点击外部关闭
-    document.addEventListener("click", () => {
-      if (isOpen) {
-        dropdown.classList.remove("show");
-        isOpen = false;
-      }
-    });
-
-    // 导出选项点击
-    dropdown.querySelectorAll(".export-item").forEach(item => {
-      item.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const type = item.getAttribute("data-export");
-        dropdown.classList.remove("show");
-        isOpen = false;
-        handleExport(type);
-      });
-    });
-  }
-
-  setupExportMenu("btnExport", "exportDropdown");
-  setupExportMenu("btnExportBottom", "exportDropdownBottom");
-
-  // 导出处理
-  async function handleExport(type) {
-    if (type === "pdf") {
-      window.print();
-      return;
-    }
-
-    // PNG 导出
+  // 导出处理（仅 PNG）
+  async function handleExport() {
     mask.classList.add("show");
     maskText.textContent = "正在生成长图…";
 
@@ -570,7 +532,6 @@
     renderConclusion();
     renderLayout();
     renderRisks();
-    renderSign();
     initAnchors();
     $("genTime").textContent = new Date().toLocaleString("zh-CN");
   }

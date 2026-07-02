@@ -60,49 +60,101 @@
 
       <div class="file-list" id="fileList" style="display:none"></div>
 
+      <!-- 自动识别提示 -->
+      <div class="auto-fill-tip" id="autoFillTip" style="display:none">
+        <div class="aft-icon">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="aft-content">
+          <div class="aft-title">✓ 智能识别完成</div>
+          <div class="aft-desc">已从上传文件中自动提取 <span id="autoFillCount">0</span> 个字段，如需修改请点击「编辑」按钮</div>
+        </div>
+        <button class="btn btn-outline" style="padding:4px 10px;font-size:12px" onclick="enableEditAll()">全部解锁编辑</button>
+      </div>
+
       <div class="divider-h"></div>
 
       <div class="form-two">
         <div class="form-row">
           <label>技术主题名称 <span class="text-danger">*</span></label>
-          <input type="text" id="fProject" placeholder="示例：面向低空经济的无人机集群协同调度技术" value="面向低空经济的无人机集群自主避障与协同调度技术" />
+          <div class="input-with-btn">
+            <input type="text" id="fProject" placeholder="上传文件后自动识别" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fProject')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>申请人单位 <span class="text-danger">*</span></label>
-          <input type="text" id="fApplicant" placeholder="请输入企业全称" value="云翔智能科技（深圳）有限公司" />
+          <div class="input-with-btn">
+            <input type="text" id="fApplicant" placeholder="上传文件后自动识别" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fApplicant')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>技术领域</label>
-          <select id="fField">
-            <option>战略性新兴产业</option>
-            <option>未来产业</option>
-            <option>传统产业</option>
-          </select>
+          <div class="input-with-btn">
+            <select id="fField" disabled>
+              <option>战略性新兴产业</option>
+              <option>未来产业</option>
+              <option>传统产业</option>
+            </select>
+            <button class="edit-btn" onclick="toggleEdit('fField')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>项目来源</label>
-          <select id="fSource">
-            <option>自研项目</option>
-            <option>政府资助</option>
-            <option>委托开发</option>
-            <option>国家省市重大科技专项</option>
-          </select>
+          <div class="input-with-btn">
+            <select id="fSource" disabled>
+              <option>自研项目</option>
+              <option>政府资助</option>
+              <option>委托开发</option>
+              <option>国家省市重大科技专项</option>
+            </select>
+            <button class="edit-btn" onclick="toggleEdit('fSource')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>发明人 <span class="text-danger">*</span></label>
-          <input type="text" id="fInventors" placeholder="多个发明人用顿号分隔" value="张启明、李文昊、周雨薇" />
+          <div class="input-with-btn">
+            <input type="text" id="fInventors" placeholder="上传文件后自动识别" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fInventors')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>电子邮箱 <span class="text-danger">*</span></label>
-          <input type="email" id="fEmail" placeholder="用于接收评估结果通知" value="ipr@yunxiang-tech.cn" />
+          <div class="input-with-btn">
+            <input type="email" id="fEmail" placeholder="上传文件后自动识别" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fEmail')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>联系电话</label>
-          <input type="text" id="fPhone" value="0755-8888-2166" />
+          <div class="input-with-btn">
+            <input type="text" id="fPhone" placeholder="上传文件后自动识别" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fPhone')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
         <div class="form-row">
           <label>拟申请专利时间</label>
-          <input type="date" id="fDate" value="2026-09-15" />
+          <div class="input-with-btn">
+            <input type="date" id="fDate" readonly />
+            <button class="edit-btn" onclick="toggleEdit('fDate')" title="点击编辑">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -146,6 +198,8 @@
     function addFile(f) {
       files.push(f);
       renderList();
+      // 自动识别字段
+      if (files.length === 1) autoFillFields();
     }
     function renderList() {
       if (files.length === 0) { fl.style.display = 'none'; return; }
@@ -161,10 +215,79 @@
         </div>
       `).join('');
     }
-    function removeFile(i) { files.splice(i, 1); renderList(); }
+    function removeFile(i) {
+      files.splice(i, 1);
+      renderList();
+      if (files.length === 0) {
+        document.getElementById('autoFillTip').style.display = 'none';
+        clearFields();
+      }
+    }
+
+    // 自动识别填充（模拟 OCR）
+    function autoFillFields() {
+      const mockData = {
+        fProject: '面向低空经济的无人机集群自主避障与协同调度技术',
+        fApplicant: '云翔智能科技（深圳）有限公司',
+        fField: '战略性新兴产业',
+        fSource: '政府资助',
+        fInventors: '张启明、李文昊、周雨薇',
+        fEmail: 'ipr@yunxiang-tech.cn',
+        fPhone: '0755-8888-2166',
+        fDate: '2026-09-15'
+      };
+
+      let count = 0;
+      Object.keys(mockData).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.value = mockData[id];
+          count++;
+        }
+      });
+
+      document.getElementById('autoFillCount').textContent = count;
+      document.getElementById('autoFillTip').style.display = 'flex';
+    }
+
+    // 清空字段
+    function clearFields() {
+      ['fProject', 'fApplicant', 'fInventors', 'fEmail', 'fPhone', 'fDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      document.getElementById('fField').selectedIndex = 0;
+      document.getElementById('fSource').selectedIndex = 0;
+    }
+
+    // 切换编辑状态
+    window.toggleEdit = function(fieldId) {
+      const el = document.getElementById(fieldId);
+      const isReadonly = el.hasAttribute('readonly') || el.hasAttribute('disabled');
+
+      if (isReadonly) {
+        el.removeAttribute('readonly');
+        el.removeAttribute('disabled');
+        el.focus();
+        el.parentElement.classList.add('editing');
+      } else {
+        el.setAttribute(el.tagName === 'SELECT' ? 'disabled' : 'readonly', '');
+        el.parentElement.classList.remove('editing');
+      }
+    };
+
+    // 全部解锁编辑
+    window.enableEditAll = function() {
+      ['fProject', 'fApplicant', 'fInventors', 'fEmail', 'fPhone', 'fDate'].forEach(id => {
+        document.getElementById(id).removeAttribute('readonly');
+      });
+      ['fField', 'fSource'].forEach(id => {
+        document.getElementById(id).removeAttribute('disabled');
+      });
+      document.querySelectorAll('.input-with-btn').forEach(el => el.classList.add('editing'));
+    };
 
     document.getElementById('submitBtn').addEventListener('click', () => {
-      // 演示：不强制上传文件，直接跳转至评估结果页
       const wrap = document.getElementById('progressWrap');
       const bar = document.getElementById('progressBar');
       const pct = document.getElementById('progressPct');
