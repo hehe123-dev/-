@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>专利智能评估系统 · 文档上传</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px">专利智能评估系统</div>
+          <div style="font-size:11px;opacity:.75;font-weight:400">Patent Intelligent Evaluation Platform</div>
+        </div>
+      </div>
+      <div class="topnav-actions">
+        <a class="btn btn-ghost" href="#">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          王振华（评估员）
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="upload-hero">
+      <h1>专利文档智能评估</h1>
+      <p>上传专利申请表、创新布局表及佐证材料，后台智能体将完成三维度指标打分、违规校验与整改建议，一键生成评估报告。</p>
+    </section>
+
+    <section class="upload-card" id="uploadApp">
+      <!-- 模板下载区（紧凑版） -->
+      <div class="tpl-bar">
+        <div class="tpl-bar-label">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          填报模板下载：
+        </div>
+        <a class="tpl-btn" href="templates/附件1-企业专利申请评估表.html" target="_blank" rel="noopener">
+          附件1 · 企业专利申请评估表
+        </a>
+        <a class="tpl-btn" href="templates/附件2-创新点与专利布局清单.html" target="_blank" rel="noopener">
+          附件2 · 创新点与专利布局清单
+        </a>
+      </div>
+
+      <div class="drop-zone" id="dropzone">
+        <svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <div class="dz-title">拖拽文件到此处或点击选择</div>
+        <div class="dz-sub">支持 PDF / Word / Excel 格式，单文件 ≤ 50MB；建议一次上传：附件1 企业申请表、附件2 创新布局表、FTO 检索报告等佐证材料</div>
+        <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx" style="display:none" />
+      </div>
+
+      <div class="file-list" id="fileList" style="display:none"></div>
+
+      <div class="divider-h"></div>
+
+      <div class="form-two">
+        <div class="form-row">
+          <label>技术主题名称 <span class="text-danger">*</span></label>
+          <input type="text" id="fProject" placeholder="示例：面向低空经济的无人机集群协同调度技术" value="面向低空经济的无人机集群自主避障与协同调度技术" />
+        </div>
+        <div class="form-row">
+          <label>申请人单位 <span class="text-danger">*</span></label>
+          <input type="text" id="fApplicant" placeholder="请输入企业全称" value="云翔智能科技（深圳）有限公司" />
+        </div>
+        <div class="form-row">
+          <label>技术领域</label>
+          <select id="fField">
+            <option>战略性新兴产业</option>
+            <option>未来产业</option>
+            <option>传统产业</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>项目来源</label>
+          <select id="fSource">
+            <option>自研项目</option>
+            <option>政府资助</option>
+            <option>委托开发</option>
+            <option>国家省市重大科技专项</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>发明人 <span class="text-danger">*</span></label>
+          <input type="text" id="fInventors" placeholder="多个发明人用顿号分隔" value="张启明、李文昊、周雨薇" />
+        </div>
+        <div class="form-row">
+          <label>电子邮箱 <span class="text-danger">*</span></label>
+          <input type="email" id="fEmail" placeholder="用于接收评估结果通知" value="ipr@yunxiang-tech.cn" />
+        </div>
+        <div class="form-row">
+          <label>联系电话</label>
+          <input type="text" id="fPhone" value="0755-8888-2166" />
+        </div>
+        <div class="form-row">
+          <label>拟申请专利时间</label>
+          <input type="date" id="fDate" value="2026-09-15" />
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px">
+        <div style="font-size:12px;color:var(--color-text-muted);flex:1">
+          提交后，智能体将依次完成：文件解析 → 内容抽取 → 三维度评分 → 违规检测 → 整改建议生成，全流程约 15-30 秒。
+        </div>
+        <button class="btn btn-outline" onclick="location.reload()">清空</button>
+        <button class="btn btn-primary" id="submitBtn">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          开始智能评估
+        </button>
+      </div>
+
+      <div id="progressWrap" style="display:none;margin-top:20px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+          <span id="progressLabel">正在解析文件…</span>
+          <span id="progressPct" class="mono">0%</span>
+        </div>
+        <div class="progress-bar"><span id="progressBar" style="width:0%"></span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const dz = document.getElementById('dropzone');
+    const fi = document.getElementById('fileInput');
+    const fl = document.getElementById('fileList');
+    const files = [];
+
+    dz.addEventListener('click', () => fi.click());
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      [...e.dataTransfer.files].forEach(addFile);
+    });
+    fi.addEventListener('change', e => [...e.target.files].forEach(addFile));
+
+    function addFile(f) {
+      files.push(f);
+      renderList();
+    }
+    function renderList() {
+      if (files.length === 0) { fl.style.display = 'none'; return; }
+      fl.style.display = 'block';
+      fl.innerHTML = files.map((f, i) => `
+        <div class="file-row">
+          <div class="file-icon">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="file-name">${f.name}</div>
+          <div class="file-size mono">${(f.size / 1024).toFixed(1)} KB</div>
+          <button class="btn btn-outline" style="padding:4px 10px;font-size:12px" onclick="removeFile(${i})">移除</button>
+        </div>
+      `).join('');
+    }
+    function removeFile(i) { files.splice(i, 1); renderList(); }
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      // 演示：不强制上传文件，直接跳转至评估结果页
+      const wrap = document.getElementById('progressWrap');
+      const bar = document.getElementById('progressBar');
+      const pct = document.getElementById('progressPct');
+      const lbl = document.getElementById('progressLabel');
+      const steps = [
+        [15, '正在解析上传文件…'],
+        [35, '智能抽取技术方案与创新点…'],
+        [58, '匹配评估机构指标体系…'],
+        [78, '生成三维度指标打分…'],
+        [92, '规则校验与不达标项检测…'],
+        [100, '评估完成，正在跳转至结果页…']
+      ];
+      wrap.style.display = 'block';
+      let idx = 0;
+      const timer = setInterval(() => {
+        const [p, t] = steps[idx];
+        bar.style.width = p + '%';
+        pct.textContent = p + '%';
+        lbl.textContent = t;
+        idx++;
+        if (idx >= steps.length) {
+          clearInterval(timer);
+          setTimeout(() => location.href = 'result.html', 500);
+        }
+      }, 600);
+    });
+  </script>
+</body>
+</html>

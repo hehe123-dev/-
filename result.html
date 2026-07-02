@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>专利评估结果报告 · PA-EVAL-2026-0378</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px">专利智能评估系统</div>
+          <div style="font-size:11px;opacity:.75;font-weight:400">评估结果 · Evaluation Report</div>
+        </div>
+      </div>
+      <div class="topnav-actions">
+        <a class="btn btn-ghost" href="index.html">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          返回上传
+        </a>
+        <button class="btn btn-ghost" onclick="window.print()">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          打印
+        </button>
+        <div class="export-menu">
+          <button class="btn btn-primary" id="btnExport">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            导出评估报告
+            <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="export-dropdown" id="exportDropdown">
+            <button class="export-item" data-export="png">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div>
+                <div class="export-item-name">导出为长图 PNG</div>
+                <div class="export-item-desc">整份报告拼接为一张图片</div>
+              </div>
+            </button>
+            <button class="export-item" data-export="pdf">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div>
+                <div class="export-item-name">导出为 PDF</div>
+                <div class="export-item-desc">调用浏览器打印，另存为 PDF</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 导出遮罩层 -->
+  <div class="export-mask" id="exportMask">
+    <div class="export-loading">
+      <div class="spinner"></div>
+      <div class="export-loading-text" id="exportLoadingText">正在生成图片…</div>
+      <div class="export-loading-sub">请稍候，全页面渲染中</div>
+    </div>
+  </div>
+
+  <div class="layout-wrap">
+  <main class="page">
+
+    <!-- =========== 板块 1：项目基础档案 =========== -->
+    <section id="sec1" class="header-hero">
+      <div class="header-hero-top">
+        <div class="hero-titles">
+          <h1 id="hProject">— 加载中 —</h1>
+          <div class="hero-sub">
+            <span id="hApplicant" class="mono"></span>
+            &nbsp;·&nbsp;评估单号 <span id="hEvalNo" class="mono"></span>
+          </div>
+          <div class="hero-tags" id="hTags"></div>
+        </div>
+        <div class="hero-score-card">
+          <div class="conclusion-label">评估结论</div>
+          <div class="conclusion-value" id="hConclusion">—</div>
+          <div class="score-value mono">
+            <span id="hScore">0</span><span class="score-unit">/100</span>
+          </div>
+          <div style="font-size:11px;opacity:.75;margin-top:4px">综合评分（三维加权）</div>
+        </div>
+      </div>
+      <div class="header-info-grid" id="hInfoGrid"></div>
+    </section>
+
+    <!-- KPI 摘要 -->
+    <div class="kpi-row" id="kpiRow"></div>
+
+    <!-- =========== 板块 2：填报原始信息预览 =========== -->
+    <section id="sec2" class="section">
+      <div class="section-title">
+        <h2>② 企业填报原始信息预览
+          <span class="subtitle">附件1 + 附件2 完整溯源，可折叠查看</span>
+        </h2>
+        <div>
+          <button class="btn btn-outline" onclick="toggleAll(true)">全部展开</button>
+          <button class="btn btn-outline" onclick="toggleAll(false)">全部折叠</button>
+        </div>
+      </div>
+
+      <!-- 附件1：技术详情原文 -->
+      <div class="collapse open" data-collapse>
+        <div class="collapse-head" onclick="toggleCollapse(this)">
+          <span>
+            <svg class="icon" style="vertical-align:-4px;margin-right:6px" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            附件 1 · 技术详情原文（企业填报）
+          </span>
+          <span class="arrow">›</span>
+        </div>
+        <div class="collapse-body" id="a1Body"></div>
+      </div>
+
+      <!-- 附件2：创新点 & 专利布局清单 -->
+      <div class="collapse open" data-collapse>
+        <div class="collapse-head" onclick="toggleCollapse(this)">
+          <span>
+            <svg class="icon" style="vertical-align:-4px;margin-right:6px" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+            附件 2 · 创新点 & 专利布局清单
+          </span>
+          <span class="arrow">›</span>
+        </div>
+        <div class="collapse-body" id="a2Body"></div>
+      </div>
+    </section>
+
+    <!-- =========== 板块 3：三维度指标量化打分 =========== -->
+    <section id="sec3" class="section">
+      <div class="section-title">
+        <h2>③ 三维度指标量化打分面板
+          <span class="subtitle">依据附件3 评估机构指标表 · A/B/C 三档打分</span>
+        </h2>
+        <div style="display:flex;gap:12px;align-items:center;font-size:12px">
+          <span><span class="grade grade-a">A</span>&nbsp;达标</span>
+          <span><span class="grade grade-b">B</span>&nbsp;瑕疵</span>
+          <span><span class="grade grade-c">C</span>&nbsp;不达标</span>
+        </div>
+      </div>
+
+      <div class="score-panel">
+        <div class="score-cats" id="scoreCats"></div>
+        <div class="chart-box">
+          <div class="chart-title">综合能力雷达图</div>
+          <div class="chart-desc">三大板块得分对比，短板一目了然</div>
+          <div id="radarChart" style="flex:1;min-height:340px"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========== 板块 4：规则判定 & 不达标问题汇总 =========== -->
+    <section id="sec4" class="section" style="border-color:#FECACA;background:#FFFAFA">
+      <div class="section-title">
+        <h2 style="color:var(--color-grade-c)">④ 不达标问题汇总专区
+          <span class="subtitle">C 级项集中高亮 · 关联企业原文溯源 · 附整改建议</span>
+          <span class="badge-count" id="issueCount">0</span>
+        </h2>
+      </div>
+
+      <!-- 前置硬性规则 -->
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:10px;color:var(--color-text)">
+          <svg class="icon" style="vertical-align:-4px;margin-right:4px;color:var(--color-grade-c)" viewBox="0 0 24 24"><path d="m21 16-9 5-9-5V8l9-5 9 5v8z"/><path d="M12 12v9"/><path d="m3.6 8.4 8.4 4.8 8.4-4.8"/></svg>
+          前置硬性规则校验（一票否决类）
+        </div>
+        <div id="hardRules"></div>
+      </div>
+
+      <!-- C 级不达标项 -->
+      <div style="font-weight:700;font-size:14px;margin-bottom:10px">
+        <svg class="icon" style="vertical-align:-4px;margin-right:4px;color:var(--color-grade-c)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
+        C 级不达标项明细（附问题溯源与整改建议）
+      </div>
+      <div id="issueList"></div>
+    </section>
+
+    <!-- =========== 板块 5：综合评估结论 & 优化建议 =========== -->
+    <section id="sec5" class="section">
+      <div class="section-title">
+        <h2>⑤ 综合评估结论与优化建议</h2>
+      </div>
+
+      <div class="conclusion-row" id="conclusionRow"></div>
+
+      <div class="advice-block">
+        <div class="advice-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3 4 7v6c0 5 4 8 8 9 4-1 8-4 8-9V7l-8-4z"/></svg>
+          法律层面整改建议
+        </div>
+        <ul id="adviceLegal"></ul>
+      </div>
+      <div class="advice-block">
+        <div class="advice-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3"/><path d="M9 12h6M9 16h6M9 8h6"/></svg>
+          技术层面优化建议
+        </div>
+        <ul id="adviceTech"></ul>
+      </div>
+      <div class="advice-block">
+        <div class="advice-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          经济 & 布局优化建议
+        </div>
+        <ul id="adviceEcon"></ul>
+      </div>
+      <div class="advice-block" style="background:#F0F9FF;border-color:#BAE6FD">
+        <div class="advice-title" style="color:#0369A1">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          长期布局延伸建议
+        </div>
+        <ul id="adviceLong"></ul>
+      </div>
+    </section>
+
+    <!-- =========== 板块 6：专利布局明细校验 =========== -->
+    <section id="sec6" class="section">
+      <div class="section-title">
+        <h2>⑥ 专利布局明细校验
+          <span class="subtitle">基于附件2 逐条比对创新点与专利规划匹配度</span>
+        </h2>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl" id="layoutTbl">
+          <thead>
+            <tr>
+              <th style="width:40px">序号</th>
+              <th>评估维度</th>
+              <th>技术分支</th>
+              <th>创新点 / 专利主题</th>
+              <th style="width:60px">数量</th>
+              <th style="width:60px">类型</th>
+              <th>保护地域</th>
+              <th style="width:90px">拟申请时间</th>
+              <th>校验结果</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =========== 板块 7：风险专项提示 =========== -->
+    <section id="sec7" class="section">
+      <div class="section-title">
+        <h2>⑦ 风险专项提示</h2>
+      </div>
+      <div class="risk-panel" id="riskPanel"></div>
+    </section>
+
+    <!-- =========== 板块 8：评估归档签字 =========== -->
+    <section id="sec8" class="section">
+      <div class="section-title">
+        <h2>⑧ 评估归档签字区</h2>
+      </div>
+
+      <table class="sign-table">
+        <thead>
+          <tr>
+            <th style="width:100px">评估人姓名</th>
+            <th style="width:140px">联系电话</th>
+            <th>所属单位</th>
+            <th style="width:180px">电子签名</th>
+            <th style="width:120px">评估日期</th>
+          </tr>
+        </thead>
+        <tbody id="signTbody"></tbody>
+      </table>
+
+      <div style="margin-top:24px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:8px">归档附件清单</div>
+        <div class="attach-list">
+          <div class="attach-item">
+            <div class="attach-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div style="flex:1">
+              <div>附件1 · 企业专利申请评估表</div>
+              <div class="attach-meta">PDF · 已归档 · 2.4MB</div>
+            </div>
+          </div>
+          <div class="attach-item">
+            <div class="attach-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div>
+            <div style="flex:1">
+              <div>附件2 · 创新点与专利布局清单</div>
+              <div class="attach-meta">XLSX · 已归档 · 512KB</div>
+            </div>
+          </div>
+          <div class="attach-item">
+            <div class="attach-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/></svg></div>
+            <div style="flex:1">
+              <div>附件3 · 评估机构指标打分表</div>
+              <div class="attach-meta">PDF · 已归档 · 1.1MB</div>
+            </div>
+          </div>
+          <div class="attach-item">
+            <div class="attach-icon"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <div style="flex:1">
+              <div>FTO 检索报告（阶段一）</div>
+              <div class="attach-meta">PDF · 已归档 · 3.8MB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:20px;gap:12px">
+        <button class="btn btn-outline" onclick="window.print()">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          打印报告
+        </button>
+        <div class="export-menu">
+          <button class="btn btn-primary" id="btnExportBottom">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            导出完整评估报告
+            <svg class="icon" viewBox="0 0 24 24" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="export-dropdown" id="exportDropdownBottom">
+            <button class="export-item" data-export="png">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div>
+                <div class="export-item-name">导出为长图 PNG</div>
+                <div class="export-item-desc">整份报告拼接为一张图片</div>
+              </div>
+            </button>
+            <button class="export-item" data-export="pdf">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div>
+                <div class="export-item-name">导出为 PDF</div>
+                <div class="export-item-desc">调用浏览器打印，另存为 PDF</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer style="text-align:center;color:var(--color-text-muted);font-size:12px;margin-top:32px">
+      本评估报告由专利智能评估系统自动生成 · 生成时间 <span class="mono" id="genTime"></span>
+    </footer>
+  </main>
+
+  <!-- 侧边锚点导航 -->
+  <aside class="side-anchor" id="anchorNav">
+    <h4>快速导航</h4>
+    <a href="#sec1" class="active">① 项目档案</a>
+    <a href="#sec2">② 填报原文预览</a>
+    <a href="#sec3">③ 指标打分面板</a>
+    <a href="#sec4">④ 不达标项汇总</a>
+    <a href="#sec5">⑤ 结论 & 建议</a>
+    <a href="#sec6">⑥ 布局明细校验</a>
+    <a href="#sec7">⑦ 风险专项提示</a>
+    <a href="#sec8">⑧ 归档签字区</a>
+  </aside>
+  </div>
+
+  <!-- ECharts -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <!-- html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="data/mockEvaluation.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
