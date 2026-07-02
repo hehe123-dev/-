@@ -156,51 +156,58 @@
   }
 
   function renderAttach2() {
-    const rows = D.attach2
-      .map(r => {
-        const rowCls = r.issue ? "row-danger" : "";
-        const issue = r.issue
-          ? `<div class="text-danger" style="font-size:12px;margin-top:4px">⚠ ${r.issue}</div>`
-          : "";
+    // 按评估维度 + 技术分支分组，计算 rowspan
+    const grouped = [];
+    let currentGroup = null;
+
+    D.attach2.forEach(r => {
+      const key = `${r.dim}|${r.branch}`;
+      if (!currentGroup || currentGroup.key !== key) {
+        currentGroup = { key, dim: r.dim, branch: r.branch, items: [] };
+        grouped.push(currentGroup);
+      }
+      currentGroup.items.push(r);
+    });
+
+    // 渲染带 rowspan 的表格（纯信息展示，无校验）
+    let rowIndex = 0;
+    const rows = grouped.map(group => {
+      return group.items.map((r, i) => {
+        rowIndex++;
+        const isFirstInGroup = i === 0;
+        const rowspan = group.items.length;
+
         return `
-        <tr class="${rowCls}">
-          <td class="mono">${r.no}</td>
-          <td>${r.dim}</td>
-          <td>${r.branch}</td>
-          <td>
-            <div style="font-weight:600">${r.innovation || '<span class="text-danger">未填写</span>'}</div>
-            <div class="text-muted" style="font-size:12px">${r.subject || "—"}</div>
-            ${issue}
-          </td>
-          <td class="mono">${r.count}</td>
-          <td>${r.type}</td>
+        <tr>
+          ${isFirstInGroup ? `<td class="mono" style="text-align:center;vertical-align:middle" rowspan="${rowspan}">${rowIndex}</td>` : ''}
+          ${isFirstInGroup ? `<td style="text-align:center;vertical-align:middle" rowspan="${rowspan}">${group.dim}</td>` : ''}
+          ${isFirstInGroup ? `<td style="vertical-align:middle" rowspan="${rowspan}">${group.branch}</td>` : ''}
+          <td><div style="font-weight:600">${r.innovation || '<span class="text-muted">—</span>'}</div></td>
+          <td><div style="font-size:13px">${r.subject || '—'}</div></td>
+          <td><div style="font-size:13px;color:var(--color-text-muted)">${r.scheme || '—'}</div></td>
+          <td class="mono" style="text-align:center">${r.count || 0}</td>
+          <td style="text-align:center">${r.type || '—'}</td>
           <td>${(r.region || []).map(x => `<span class="chip">${x}</span>`).join("") || "—"}</td>
-          <td class="mono">${r.timing}</td>
-          <td>
-            ${
-              r.issue
-                ? '<span class="risk-tag risk-high">存在瑕疵</span>'
-                : '<span class="risk-tag risk-low">通过</span>'
-            }
-          </td>
+          <td class="mono" style="text-align:center">${r.timing || '—'}</td>
         </tr>`;
-      })
-      .join("");
+      }).join("");
+    }).join("");
 
     $("a2Body").innerHTML = `
       <div style="overflow-x:auto">
         <table class="tbl">
           <thead>
             <tr>
-              <th>序号</th>
-              <th>评估维度</th>
-              <th>技术分支</th>
-              <th>创新点 / 专利主题</th>
-              <th>数量</th>
-              <th>类型</th>
-              <th>保护地域</th>
-              <th>拟申请</th>
-              <th>状态</th>
+              <th style="width:50px">序号</th>
+              <th style="width:100px">评估维度</th>
+              <th style="width:140px">技术分支</th>
+              <th style="width:180px">创新点</th>
+              <th style="width:200px">专利主题</th>
+              <th style="width:180px">技术方案</th>
+              <th style="width:60px">拟申请数量</th>
+              <th style="width:80px">专利类型</th>
+              <th style="width:140px">保护地域</th>
+              <th style="width:100px">拟申请时间</th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>

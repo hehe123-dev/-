@@ -49,7 +49,7 @@ window.EVAL_DATA = {
     {
       no: 1,
       dim: "技术热点",
-      branch: "多机协同避障算法",
+      branch: "协同避障算法",
       innovation: "基于图注意力机制的轻量化协同避障模型",
       subject: "一种基于图注意力网络的无人机集群协同避障方法",
       scheme: "融合空间关系与运动意图，端侧≤18ms完成决策",
@@ -60,9 +60,9 @@ window.EVAL_DATA = {
       issue: null
     },
     {
-      no: 2,
+      no: 1,
       dim: "技术热点",
-      branch: "感知融合",
+      branch: "协同避障算法",
       innovation: "多传感器时空同步与轻量化Transformer识别",
       subject: "一种多传感器时空对齐的障碍物识别装置",
       scheme: "毫米波+视觉时空对齐，模型体积压缩到11MB",
@@ -73,7 +73,20 @@ window.EVAL_DATA = {
       issue: "地域布局仅覆盖国内，未考虑海外核心市场；建议补充PCT"
     },
     {
-      no: 3,
+      no: 1,
+      dim: "技术热点",
+      branch: "协同避障算法",
+      innovation: "边缘计算节点任务重分配",
+      subject: "",
+      scheme: "",
+      count: 0,
+      type: "-",
+      region: [],
+      timing: "-",
+      issue: "创新点未形成有效专利主题，无技术方案与数量规划，属布局缺失项"
+    },
+    {
+      no: 2,
       dim: "技术空白点",
       branch: "任务动态重规划",
       innovation: "基于强化学习的任务再分配机制",
@@ -86,7 +99,7 @@ window.EVAL_DATA = {
       issue: null
     },
     {
-      no: 4,
+      no: 3,
       dim: "技术热点",
       branch: "地面调度系统",
       innovation: "三维态势可视化交互",
@@ -97,19 +110,6 @@ window.EVAL_DATA = {
       region: [],
       timing: "-",
       issue: "创新点未形成有效专利主题，无技术方案与数量规划，属布局缺失项"
-    },
-    {
-      no: 5,
-      dim: "技术空白点",
-      branch: "低空频谱抗干扰",
-      innovation: "",
-      subject: "",
-      scheme: "",
-      count: 0,
-      type: "-",
-      region: [],
-      timing: "-",
-      issue: "识别出空白赛道但企业未填写创新点，遗漏关键技术空白"
     }
   ],
 
