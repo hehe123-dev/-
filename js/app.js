@@ -216,6 +216,35 @@
     `;
   }
 
+  // ============ 附件3：FTO 检索报告基础信息（原文预览） ============
+  function renderAttach3() {
+    const a3 = D.attach3;
+    $("a3Body").innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <div class="info-item">
+          <div class="info-label">报告编号</div>
+          <div class="info-value mono">${a3.reportNo}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">检索日期</div>
+          <div class="info-value">${a3.reportDate}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">检索机构</div>
+          <div class="info-value">${a3.agency}</div>
+        </div>
+        <div class="info-item" style="grid-column:span 3">
+          <div class="info-label">检索范围</div>
+          <div class="info-value">${a3.scope}</div>
+        </div>
+        <div class="info-item" style="grid-column:span 3">
+          <div class="info-label">检索关键词</div>
+          <div class="info-value">${a3.keywords}</div>
+        </div>
+      </div>
+    `;
+  }
+
   // ============ 板块 3：三维度打分 + 雷达 ============
   function renderScores() {
     const cats = [D.scores.legal, D.scores.tech, D.scores.econ];
@@ -420,6 +449,76 @@
       .join("");
   }
 
+  // ============ FTO 检索结果分析（⑥ 和 ⑦ 之间） ============
+  function renderFtoAnalysis() {
+    const a3 = D.attach3;
+    const riskRows = a3.riskPatents.map(p => {
+      const levelClass = p.riskLevel === "高风险" ? "risk-high" : p.riskLevel === "中风险" ? "risk-mid" : "risk-low";
+      return `
+      <tr>
+        <td class="mono" style="font-weight:600">${p.patentNo}</td>
+        <td>${p.title}</td>
+        <td>${p.applicant}</td>
+        <td class="mono">${p.publicDate}</td>
+        <td style="text-align:center"><span class="risk-tag ${levelClass}">${p.riskLevel}</span></td>
+        <td style="font-size:12px;line-height:1.6">${p.analysis}</td>
+      </tr>`;
+    }).join("");
+
+    $("ftoAnalysis").innerHTML = `
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:10px">检索结果统计</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <div style="padding:16px;background:#F8FAFC;border-radius:10px;text-align:center;border:1px solid var(--color-border)">
+            <div style="font-size:28px;font-weight:700;color:var(--color-primary);font-family:'Fira Code',monospace">${a3.searchResult.totalFound}</div>
+            <div style="font-size:13px;color:var(--color-text-muted);margin-top:6px">检索总量</div>
+          </div>
+          <div style="padding:16px;background:#FEF2F2;border-radius:10px;text-align:center;border:1px solid #FECACA">
+            <div style="font-size:28px;font-weight:700;color:#DC2626;font-family:'Fira Code',monospace">${a3.searchResult.relevantHigh}</div>
+            <div style="font-size:13px;color:#991B1B;margin-top:6px">高相关</div>
+          </div>
+          <div style="padding:16px;background:#FFFBEB;border-radius:10px;text-align:center;border:1px solid #FDE68A">
+            <div style="font-size:28px;font-weight:700;color:#F59E0B;font-family:'Fira Code',monospace">${a3.searchResult.relevantMid}</div>
+            <div style="font-size:13px;color:#92400E;margin-top:6px">中相关</div>
+          </div>
+          <div style="padding:16px;background:#F0FDF4;border-radius:10px;text-align:center;border:1px solid #BBF7D0">
+            <div style="font-size:28px;font-weight:700;color:#10B981;font-family:'Fira Code',monospace">${a3.searchResult.relevantLow}</div>
+            <div style="font-size:13px;color:#065F46;margin-top:6px">低相关</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:10px">重点风险专利明细</div>
+        <div style="overflow-x:auto">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th style="width:140px">专利号</th>
+                <th style="width:280px">专利名称</th>
+                <th style="width:180px">申请人</th>
+                <th style="width:100px">公开日期</th>
+                <th style="width:90px">风险等级</th>
+                <th>风险分析与建议</th>
+              </tr>
+            </thead>
+            <tbody>${riskRows}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="padding:16px;background:#FFFBEB;border-left:4px solid #F59E0B;border-radius:8px;margin-bottom:16px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:8px;color:#92400E">📋 检索结论</div>
+        <div style="font-size:13px;line-height:1.8;color:var(--color-text)">${a3.conclusion}</div>
+      </div>
+
+      <div style="padding:16px;background:#EFF6FF;border-left:4px solid var(--color-primary);border-radius:8px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:8px;color:var(--color-primary-dark)">🔜 后续计划</div>
+        <div style="font-size:13px;line-height:1.8;color:var(--color-text)">${a3.nextStep}</div>
+      </div>
+    `;
+  }
+
   // ============ 板块 7：风险专项 ============
   function renderRisks() {
     $("riskPanel").innerHTML = D.risks
@@ -534,10 +633,12 @@
     renderKpi();
     renderAttach1();
     renderAttach2();
+    renderAttach3();
     renderScores();
     renderIssues();
     renderConclusion();
     renderLayout();
+    renderFtoAnalysis();
     renderRisks();
     initAnchors();
     $("genTime").textContent = new Date().toLocaleString("zh-CN");

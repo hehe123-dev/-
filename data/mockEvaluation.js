@@ -113,6 +113,43 @@ window.EVAL_DATA = {
     }
   ],
 
+  // ===== 附件3 FTO 检索报告摘要 =====
+  attach3: {
+    reportNo: "FTO-2026-0378-P1",
+    reportDate: "2026-06-15",
+    agency: "国家知识产权局专利检索中心",
+    scope: "中国境内已公开专利、国际 PCT 申请（阶段一）",
+    keywords: "无人机集群、协同避障、图注意力网络、多机任务分配",
+    searchResult: {
+      totalFound: 1847,
+      relevantHigh: 23,
+      relevantMid: 156,
+      relevantLow: 1668
+    },
+    riskPatents: [
+      {
+        patentNo: "CN202010xxxxx.X",
+        title: "一种基于深度学习的无人机集群协同避障方法",
+        applicant: "xx航空科技有限公司",
+        publicDate: "2022-03-15",
+        status: "已授权",
+        riskLevel: "中风险",
+        analysis: "该专利覆盖基于深度学习的集群避障方法，与本申请存在技术路线重叠，但本申请采用图注意力机制+轻量化设计，存在差异化空间。"
+      },
+      {
+        patentNo: "WO2023/xxxxxx",
+        title: "Multi-UAV Collision Avoidance Using Graph Neural Networks",
+        applicant: "MIT (美国)",
+        publicDate: "2023-08-20",
+        status: "PCT 公开",
+        riskLevel: "高风险",
+        analysis: "该 PCT 申请已明确采用图神经网络（GNN）进行多无人机避障，与本申请技术方案高度相似。建议：1) 强化本申请在端侧轻量化、实时性（≤18ms）等差异化特征；2) 考虑与申请人开展交叉许可谈判。"
+      }
+    ],
+    conclusion: "阶段一检索未发现直接侵权风险，但存在 1 项高风险 PCT 申请（WO2023/xxxxxx）需重点关注。建议在提交申请前完成阶段二海外核心专利检索，并针对高风险专利进行规避设计或许可谈判。",
+    nextStep: "阶段二检索范围：美国、欧洲、日本已授权专利，预计完成时间 2026-07-30。"
+  },
+
   // ===== 附件3 指标打分 =====
   scores: {
     legal: {
