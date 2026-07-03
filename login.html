@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 · 专利智能评估系统</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 1200px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    .login-left {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-left h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .login-left p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .feature-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+    }
+    .login-right {
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-header {
+      margin-bottom: 40px;
+    }
+    .login-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    .login-subtitle {
+      font-size: 14px;
+      color: #64748b;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      font-size: 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .form-group input.error {
+      border-color: #ef4444;
+    }
+    .error-msg {
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+    .error-msg.show {
+      display: block;
+    }
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .form-options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      color: #475569;
+    }
+    .test-accounts-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 24px;
+    }
+    .test-accounts-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+    .test-account-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .test-account-item:last-child {
+      margin-bottom: 0;
+    }
+    .test-account-info {
+      flex: 1;
+    }
+    .test-account-role {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 3px;
+    }
+    .test-account-creds {
+      font-size: 12px;
+      color: #64748b;
+      font-family: 'Fira Code', monospace;
+    }
+    .quick-login-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .quick-login-btn:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶部导航 -->
+  <header class="topnav">
+    <div class="topnav-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <div style="font-size:16px">专利智能评估系统</div>
+          <div style="font-size:11px;opacity:.75;font-weight:400">Patent Intelligent Evaluation Platform</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="login-page">
+    <div class="login-container">
+      <!-- 左侧品牌区域 -->
+      <div class="login-left">
+        <h1>专利智能评估<br/>一站式解决方案</h1>
+        <p>基于AI技术的专利价值评估平台，提供法律价值、技术价值、经济价值三维度智能分析</p>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <span>智能文档解析与数据提取</span>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z"/></svg>
+            </div>
+            <span>三维度指标体系自动评分</span>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span>一键生成完整评估报告</span>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <span>多角色权限管理与协作</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 右侧登录表单 -->
+      <div class="login-right">
+        <div class="login-header">
+          <h2 class="login-title">欢迎登录</h2>
+          <p class="login-subtitle">请输入您的账号密码进行登录</p>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label>账号</label>
+            <input type="text" id="username" placeholder="请输入账号" required />
+            <div class="error-msg" id="usernameError">请输入账号</div>
+          </div>
+
+          <div class="form-group">
+            <label>密码</label>
+            <input type="password" id="password" placeholder="请输入密码" required />
+            <div class="error-msg" id="passwordError">请输入密码</div>
+          </div>
+
+          <div class="form-options">
+            <label>
+              <input type="checkbox" id="remember" />
+              记住账号
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="loginBtn" style="width: 100%; height: 48px;">
+            登录系统
+          </button>
+        </form>
+
+        <!-- 测试账号面板 -->
+        <div class="test-accounts-panel">
+          <div class="test-accounts-title">测试账号（开发/演示环境）</div>
+          <div class="test-account-item">
+            <div class="test-account-info">
+              <div class="test-account-role">管理员</div>
+              <div class="test-account-creds">admin / admin123</div>
+            </div>
+            <button class="quick-login-btn" type="button" onclick="quickLogin('admin', 'admin123')">快速登录</button>
+          </div>
+          <div class="test-account-item">
+            <div class="test-account-info">
+              <div class="test-account-role">用户</div>
+              <div class="test-account-creds">evaluator / 123456</div>
+            </div>
+            <button class="quick-login-btn" type="button" onclick="quickLogin('evaluator', '123456')">快速登录</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // 预设账号
+    const accounts = [
+      { username: 'admin', password: 'admin123', name: '系统管理员' },
+      { username: 'evaluator', password: '123456', name: '用户' }
+    ];
+
+    // 检查是否已登录
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser.username === 'admin') {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    // 自动填充记住的账号
+    if (localStorage.getItem('rememberedUser')) {
+      const remembered = JSON.parse(localStorage.getItem('rememberedUser'));
+      usernameInput.value = remembered.username;
+      document.getElementById('remember').checked = true;
+    }
+
+    // 表单提交
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const remember = document.getElementById('remember').checked;
+
+      // 清除错误提示
+      document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+      document.querySelectorAll('.form-group input').forEach(el => el.classList.remove('error'));
+
+      // 验证输入
+      let hasError = false;
+      if (!username) {
+        document.getElementById('usernameError').classList.add('show');
+        usernameInput.classList.add('error');
+        hasError = true;
+      }
+      if (!password) {
+        document.getElementById('passwordError').classList.add('show');
+        passwordInput.classList.add('error');
+        hasError = true;
+      }
+      if (hasError) return;
+
+      // 验证账号密码
+      const user = accounts.find(acc => acc.username === username && acc.password === password);
+
+      if (user) {
+        loginBtn.textContent = '登录成功，正在跳转...';
+        loginBtn.disabled = true;
+
+        // 保存登录状态
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('currentUser', JSON.stringify({
+          username: user.username,
+          name: user.name
+        }));
+
+        // 记住账号
+        if (remember) {
+          localStorage.setItem('rememberedUser', JSON.stringify({ username: user.username }));
+        } else {
+          localStorage.removeItem('rememberedUser');
+        }
+
+        // 跳转：管理员去后台，用户去首页
+        setTimeout(() => {
+          if (user.username === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        }, 800);
+      } else {
+        document.getElementById('passwordError').textContent = '账号或密码错误';
+        document.getElementById('passwordError').classList.add('show');
+        passwordInput.classList.add('error');
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    });
+
+    // 输入时清除错误
+    usernameInput.addEventListener('input', function() {
+      this.classList.remove('error');
+      document.getElementById('usernameError').classList.remove('show');
+    });
+    passwordInput.addEventListener('input', function() {
+      this.classList.remove('error');
+      document.getElementById('passwordError').classList.remove('show');
+    });
+
+    // 快速登录
+    window.quickLogin = function(username, password) {
+      usernameInput.value = username;
+      passwordInput.value = password;
+      loginForm.dispatchEvent(new Event('submit'));
+    };
+  </script>
+</body>
+</html>

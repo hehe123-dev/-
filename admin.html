@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>后台管理 · 专利智能评估系统</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <div class="admin-container">
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <div class="admin-brand-title">后台管理系统</div>
+        <div class="admin-brand-sub">Patent Admin Panel</div>
+      </div>
+      <nav class="admin-nav">
+        <a href="#" class="admin-nav-item active" data-section="users">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          用户管理
+        </a>
+        <a href="#" class="admin-nav-item" data-section="weights">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          评估指标权重
+        </a>
+      </nav>
+      <div class="admin-sidebar-bottom">
+        <div class="admin-user-info">
+          <div class="admin-user-avatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="admin-user-detail">
+            <div class="admin-user-name" id="sidebarUserName">系统管理员</div>
+            <div class="admin-user-role">管理员</div>
+          </div>
+        </div>
+        <button class="admin-logout-btn" onclick="logout()">
+          <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          退出登录
+        </button>
+        <div class="admin-footer">© 2026 专利评估系统</div>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1 class="admin-header-title" id="pageTitle">用户管理</h1>
+        <div class="admin-header-actions">
+          <span id="currentUserDisplay" style="color: #64748b; font-size: 14px;"></span>
+        </div>
+      </div>
+
+      <div class="admin-content" id="usersSection">
+        <div class="user-toolbar">
+          <h2 style="font-size: 18px; font-weight: 600; color: #1e293b;">用户账号管理</h2>
+          <button class="btn btn-primary" onclick="openAddUserModal()">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            添加账号
+          </button>
+        </div>
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>账号</th>
+              <th>姓名</th>
+              <th>角色</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="admin-content section-hidden" id="weightsSection">
+        <div class="industry-toolbar">
+          <div class="weight-selector">
+            <label>选择产业类型</label>
+            <select id="industrySelect" onchange="loadWeights()"></select>
+          </div>
+          <div class="industry-actions">
+            <button class="btn btn-outline" onclick="openAddIndustryModal()">
+              <svg class="icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              新增产业
+            </button>
+            <button class="btn btn-outline" onclick="deleteCurrentIndustry()" id="deleteIndustryBtn">
+              <svg class="icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+              删除产业
+            </button>
+            <button class="btn btn-primary" onclick="saveWeights()">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              保存权重配置
+            </button>
+          </div>
+        </div>
+        <div id="weightsContainer"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 新增产业模态框 -->
+  <div class="modal" id="industryModal">
+    <div class="modal-content">
+      <h2 class="modal-title">新增产业类型</h2>
+      <form id="industryForm">
+        <div class="form-row">
+          <label>产业名称 <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="inputIndustryName" placeholder="请输入产业名称（如：新能源产业）" required />
+        </div>
+        <div class="form-row">
+          <label>产业编码 <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="inputIndustryCode" placeholder="请输入英文编码（如：newenergy）" pattern="[a-zA-Z0-9_]+" required />
+          <div style="font-size: 12px; color: #64748b; margin-top: 4px;">仅支持英文字母、数字和下划线</div>
+        </div>
+        <div class="form-row">
+          <label>权重初始化方式</label>
+          <select id="inputInitMode">
+            <option value="default">使用默认权重（各25%/33%）</option>
+            <option value="copy">复制现有产业配置</option>
+          </select>
+        </div>
+        <div class="form-row" id="copyIndustryRow" style="display: none;">
+          <label>选择要复制的产业</label>
+          <select id="inputCopyFrom"></select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeIndustryModal()">取消</button>
+          <button type="submit" class="btn btn-primary">确定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <h2 class="modal-title" id="modalTitle">添加账号</h2>
+      <form id="userForm">
+        <div class="form-row">
+          <label>账号 <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="inputUsername" placeholder="请输入账号" required />
+        </div>
+        <div class="form-row">
+          <label>姓名 <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="inputName" placeholder="请输入姓名" required />
+        </div>
+        <div class="form-row">
+          <label>密码 <span style="color: #ef4444;">*</span></label>
+          <input type="password" id="inputPassword" placeholder="请输入密码" required />
+        </div>
+        <div class="form-row">
+          <label>角色</label>
+          <select id="inputRole">
+            <option value="evaluator">用户</option>
+            <option value="admin">管理员</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeUserModal()">取消</button>
+          <button type="submit" class="btn btn-primary">确定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="admin-main.js"></script>
+  <script src="admin-users.js"></script>
+  <script src="admin-weights.js"></script>
+</body>
+</html>
