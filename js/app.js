@@ -449,7 +449,7 @@
       .join("");
   }
 
-  // ============ FTO 检索结果分析（⑥ 和 ⑦ 之间） ============
+  // ============ 板块 7：FTO 检索结果分析 ============
   function renderFtoAnalysis() {
     const a3 = D.attach3;
     const riskRows = a3.riskPatents.map(p => {
@@ -519,7 +519,7 @@
     `;
   }
 
-  // ============ 板块 7：风险专项 ============
+  // ============ 板块 8：风险专项 ============
   function renderRisks() {
     $("riskPanel").innerHTML = D.risks
       .map(r => {
