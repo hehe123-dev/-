@@ -18,7 +18,7 @@ window.EVAL_DATA = {
     evalNo: "PA-EVAL-2026-0378",
     evalDate: "2026-06-28",
     intendApplyDate: "2026-09-15",
-    evalOrg: "国家专利评估中心（华南分中心）",
+    evalOrg: "中国专利信息中心",
     evaluators: ["王振华", "陈丽君"],
     conclusion: "建议申请", // 积极申请 / 建议申请 / 暂缓申请 / 不支持申请
     totalScore: 74.5
@@ -41,7 +41,7 @@ window.EVAL_DATA = {
       navigation: "已完成本领域主要技术分支的专利导航图谱，识别出3个技术空白点",
       rmSystem: "公司暂未建立完整的知识产权侵权预警与专利规避审查机制，仅由研发负责人临时把关"
     },
-    conversion: ["自行实施", "许可"]
+    conversion: ["自行实施", "许可", "转让", "作价入股", "质押融资"]
   },
 
   // ===== 附件2 创新点 & 专利布局清单 =====

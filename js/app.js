@@ -30,7 +30,7 @@
       { label: "评估日期", value: D.meta.evalDate, mono: true },
       { label: "拟申请专利时间", value: D.meta.intendApplyDate, mono: true },
       { label: "评估机构", value: D.meta.evalOrg },
-      { label: "申请人单位", value: D.meta.applicant },
+      { label: "申请人", value: D.meta.applicant },
       { label: "发明人", value: D.meta.inventors },
       { label: "联系电话", value: D.meta.phone, mono: true },
       { label: "电子邮箱", value: D.meta.email, mono: true }
@@ -97,62 +97,56 @@
   }
 
   // ============ 板块 2：附件1、附件2 原文 ============
-  function renderAttach1() {
-    const a = D.attach1;
-    $("a1Body").innerHTML = `
-      <div class="data-grid">
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">背景技术</span>
-          <span class="data-value">${a.background}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">待解决技术问题</span>
-          <span class="data-value">${a.problem}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">技术优势</span>
-          <span class="data-value" style="white-space:pre-line">${a.advantage}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">完整技术方案</span>
-          <span class="data-value">${a.scheme}</span>
-        </div>
-        <div class="data-item">
-          <span class="data-label">应用领域</span>
-          <span class="data-value">${a.apps.area}</span>
-        </div>
-        <div class="data-item">
-          <span class="data-label">合作客户</span>
-          <span class="data-value">${a.apps.clients}</span>
-        </div>
-        <div class="data-item">
-          <span class="data-label">预期效益</span>
-          <span class="data-value">${a.apps.benefit}</span>
-        </div>
-        <div class="data-item">
-          <span class="data-label">产业化周期</span>
-          <span class="data-value">${a.apps.cycle}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">FTO 检索</span>
-          <span class="data-value">${a.risk.fto}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">专利导航</span>
-          <span class="data-value">${a.risk.navigation}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">知识产权风控机制</span>
-          <span class="data-value text-danger">${a.risk.rmSystem}</span>
-        </div>
-        <div class="data-item" style="grid-column: 1 / -1">
-          <span class="data-label">拟转化方式</span>
-          <span class="data-value">
-            ${a.conversion.map(c => `<span class="chip">${c}</span>`).join("")}
-          </span>
-        </div>
+  function sectionGroup(title, fields) {
+    const rows = fields.map(f => {
+      let valHtml;
+      if (f.chips) {
+        valHtml = `<span class="a1-field-value">${f.chips.map(c => `<span class="chip">${c}</span>`).join('')}</span>`;
+      } else {
+        valHtml = `<span class="a1-field-value${f.danger ? ' text-danger' : ''}"${f.preLine ? ' style="white-space:pre-line"' : ''}>${f.value}</span>`;
+      }
+      return `
+      <div class="a1-field">
+        <span class="a1-field-label">${f.label}</span>
+        ${valHtml}
       </div>
     `;
+    }).join('');
+    return `
+      <div class="a1-section">
+        <div class="a1-section-title">${title}</div>
+        <div class="a1-section-body">${rows}</div>
+      </div>
+    `;
+  }
+
+  function renderAttach1() {
+    const a = D.attach1;
+    const sections = [
+      sectionGroup('1. 背景技术', [
+        { label: '背景技术', value: a.background },
+        { label: '技术问题', value: a.problem }
+      ]),
+      sectionGroup('2. 技术方案', [
+        { label: '技术优势', value: a.advantage, preLine: true },
+        { label: '技术方案', value: a.scheme }
+      ]),
+      sectionGroup('3. 应用前景', [
+        { label: '应用领域', value: a.apps.area },
+        { label: '潜在或已合作公司', value: a.apps.clients },
+        { label: '预计经济效益', value: a.apps.benefit },
+        { label: '产业化周期', value: a.apps.cycle }
+      ]),
+      sectionGroup('4. 风险情况', [
+        { label: '是否做过FTO', value: a.risk.fto },
+        { label: '专利导航', value: a.risk.navigation },
+        { label: '是否形成风控防火墙等机制', value: a.risk.rmSystem, danger: true }
+      ]),
+      sectionGroup('5. 拟转化方式', [
+        { label: '拟转化方式', chips: a.conversion }
+      ])
+    ];
+    $("a1Body").innerHTML = sections.join('');
   }
 
   function renderAttach2() {

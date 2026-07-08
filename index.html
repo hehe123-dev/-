@@ -20,6 +20,11 @@
         </div>
       </div>
       <div class="topnav-actions">
+        <button class="btn btn-ghost" id="historyBtn" style="position:relative">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          历史记录
+          <span class="history-badge" id="historyBadge" style="display:none">0</span>
+        </button>
         <a class="btn btn-ghost" href="#" id="userInfo">
           <svg class="icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           <span id="userName">加载中...</span>
@@ -31,6 +36,17 @@
       </div>
     </div>
   </header>
+
+  <!-- 历史记录下拉面板 -->
+  <div class="history-dropdown" id="historyDropdown" style="display:none">
+    <div class="history-header">
+      <div class="history-title">评估历史记录</div>
+      <button class="history-clear" id="historyClear">清空全部</button>
+    </div>
+    <div class="history-list" id="historyList">
+      <div class="history-empty">暂无历史记录</div>
+    </div>
+  </div>
 
   <main class="page">
     <section class="upload-hero">
@@ -61,8 +77,8 @@
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
         <div class="dz-title">拖拽文件到此处或点击选择</div>
-        <div class="dz-sub">支持 PDF / Word / Excel 格式，单文件 ≤ 50MB；建议一次上传：附件1 企业申请表、附件2 创新布局表、FTO 检索报告等佐证材料</div>
-        <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx" style="display:none" />
+        <div class="dz-sub">仅支持 Word 格式，单文件 ≤ 50MB；建议一次上传：附件1 企业申请表、附件2 创新布局表、FTO 检索报告等佐证材料</div>
+        <input type="file" id="fileInput" multiple accept=".doc,.docx" style="display:none" />
       </div>
 
       <div class="file-list" id="fileList" style="display:none"></div>
@@ -92,7 +108,7 @@
           </div>
         </div>
         <div class="form-row">
-          <label>申请人单位 <span class="text-danger">*</span></label>
+          <label>申请人 <span class="text-danger">*</span></label>
           <div class="input-with-btn">
             <input type="text" id="fApplicant" placeholder="上传文件后自动识别" readonly />
             <button class="edit-btn" onclick="toggleEdit('fApplicant')" title="点击编辑">
@@ -101,7 +117,7 @@
           </div>
         </div>
         <div class="form-row">
-          <label>技术领域</label>
+          <label>技术领域 <span class="text-danger">*</span></label>
           <div class="input-with-btn">
             <select id="fField" disabled>
               <option>战略性新兴产业</option>
@@ -114,7 +130,7 @@
           </div>
         </div>
         <div class="form-row">
-          <label>项目来源</label>
+          <label>项目来源 <span class="text-danger">*</span></label>
           <div class="input-with-btn">
             <select id="fSource" disabled>
               <option>自研项目</option>
@@ -146,7 +162,7 @@
           </div>
         </div>
         <div class="form-row">
-          <label>联系电话</label>
+          <label>联系电话 <span class="text-danger">*</span></label>
           <div class="input-with-btn">
             <input type="text" id="fPhone" placeholder="上传文件后自动识别" readonly />
             <button class="edit-btn" onclick="toggleEdit('fPhone')" title="点击编辑">
@@ -186,6 +202,42 @@
     </section>
   </main>
 
+  <!-- 附件类型选择模态框 -->
+  <div class="atype-modal" id="atypeModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="atypeTitle">
+    <div class="atype-mask" id="atypeMask"></div>
+    <div class="atype-dialog">
+      <div class="atype-header">
+        <div>
+          <div class="atype-title" id="atypeTitle">请选择附件类型</div>
+          <div class="atype-sub">当前文件：<span id="atypeFileName" class="mono"></span></div>
+        </div>
+        <button class="atype-close" id="atypeClose" aria-label="关闭">
+          <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="atype-options">
+        <button class="atype-opt" data-type="1">
+          <span class="atype-badge atype-badge-1">附件1</span>
+          <span class="atype-opt-name">企业专利申请评估表</span>
+          <span class="atype-opt-desc">项目档案 / 申请人 / 发明人等基础信息</span>
+        </button>
+        <button class="atype-opt" data-type="2">
+          <span class="atype-badge atype-badge-2">附件2</span>
+          <span class="atype-opt-name">创新点与专利布局清单</span>
+          <span class="atype-opt-desc">技术创新点、权利要求布局与保护范围</span>
+        </button>
+        <button class="atype-opt" data-type="3">
+          <span class="atype-badge atype-badge-3">附件3</span>
+          <span class="atype-opt-name">检索报告 / 佐证材料</span>
+          <span class="atype-opt-desc">FTO 检索、现有技术对比、佐证文件</span>
+        </button>
+      </div>
+      <div class="atype-footer">
+        <span class="atype-hint">同一类型可上传多个文件（如附件3常包含多份佐证材料）</span>
+      </div>
+    </div>
+  </div>
+
   <script>
     // 登录验证
     (function checkLogin() {
@@ -209,10 +261,145 @@
       }
     }
 
+    // ===== 历史记录管理 =====
+    const HISTORY_KEY = 'patent_eval_history';
+
+    function getHistory() {
+      try {
+        const data = localStorage.getItem(HISTORY_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveHistory(record) {
+      const history = getHistory();
+      history.unshift(record);
+      if (history.length > 50) history.splice(50);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      updateHistoryBadge();
+    }
+
+    function clearHistory() {
+      if (confirm('确定要清空全部历史记录吗？')) {
+        localStorage.removeItem(HISTORY_KEY);
+        updateHistoryBadge();
+        renderHistoryList();
+      }
+    }
+
+    function updateHistoryBadge() {
+      const count = getHistory().length;
+      const badge = document.getElementById('historyBadge');
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function checkDuplicate(fileNames) {
+      const history = getHistory();
+      const fileSet = new Set(fileNames);
+      for (const record of history) {
+        const recordSet = new Set(record.files.map(f => f.name));
+        if (fileSet.size === recordSet.size && [...fileSet].every(f => recordSet.has(f))) {
+          return record;
+        }
+      }
+      return null;
+    }
+
+    function renderHistoryList() {
+      const list = document.getElementById('historyList');
+      const history = getHistory();
+
+      if (history.length === 0) {
+        list.innerHTML = '<div class="history-empty">暂无历史记录</div>';
+        return;
+      }
+
+      list.innerHTML = history.map((rec, i) => `
+        <div class="history-item" data-index="${i}">
+          <div class="history-item-header">
+            <div class="history-item-name">${rec.project || '未命名项目'}</div>
+            <div class="history-item-time">${rec.time}</div>
+          </div>
+          <div class="history-item-files">
+            ${rec.files.map(f => `
+              <span class="history-file-tag">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                ${f.name}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 历史记录下拉菜单控制
+    const historyBtn = document.getElementById('historyBtn');
+    const historyDropdown = document.getElementById('historyDropdown');
+    const historyClear = document.getElementById('historyClear');
+
+    historyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = historyDropdown.style.display === 'block';
+      historyDropdown.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) renderHistoryList();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!historyDropdown.contains(e.target) && e.target !== historyBtn) {
+        historyDropdown.style.display = 'none';
+      }
+    });
+
+    historyClear.addEventListener('click', clearHistory);
+
+    updateHistoryBadge();
+
     const dz = document.getElementById('dropzone');
     const fi = document.getElementById('fileInput');
     const fl = document.getElementById('fileList');
     const files = [];
+
+    // ===== 附件类型选择模态框 =====
+    const atypeModal = document.getElementById('atypeModal');
+    const atypeMask = document.getElementById('atypeMask');
+    const atypeClose = document.getElementById('atypeClose');
+    const atypeFileName = document.getElementById('atypeFileName');
+    let atypeTargetIndex = -1;
+
+    function openTypeModal(index) {
+      const item = files[index];
+      if (!item) return;
+      atypeTargetIndex = index;
+      atypeFileName.textContent = item.file.name;
+      atypeModal.style.display = 'flex';
+    }
+    function closeTypeModal() {
+      atypeModal.style.display = 'none';
+      atypeTargetIndex = -1;
+    }
+    atypeMask.addEventListener('click', closeTypeModal);
+    atypeClose.addEventListener('click', closeTypeModal);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && atypeModal.style.display === 'flex') closeTypeModal();
+    });
+    document.querySelectorAll('.atype-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = Number(btn.dataset.type);
+        if (atypeTargetIndex < 0 || !files[atypeTargetIndex]) return;
+        files[atypeTargetIndex].type = t;
+        closeTypeModal();
+        renderList();
+      });
+    });
+
+    window.chooseType = function(i) { openTypeModal(i); };
 
     dz.addEventListener('click', () => fi.click());
     dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
@@ -220,26 +407,80 @@
     dz.addEventListener('drop', e => {
       e.preventDefault();
       dz.classList.remove('dragover');
-      [...e.dataTransfer.files].forEach(addFile);
+      const newFiles = [...e.dataTransfer.files];
+
+      // 检查是否与历史记录重复
+      if (newFiles.length > 0 && files.length === 0) {
+        const fileNames = newFiles.map(f => f.name);
+        const duplicate = checkDuplicate(fileNames);
+        if (duplicate) {
+          const confirmed = confirm(
+            `检测到历史记录中存在相同的文件组合：\n` +
+            `项目：${duplicate.project || '未命名'}\n` +
+            `时间：${duplicate.time}\n\n` +
+            `是否继续上传并重新生成评估？`
+          );
+          if (!confirmed) return;
+        }
+      }
+
+      newFiles.forEach(addFile);
     });
-    fi.addEventListener('change', e => [...e.target.files].forEach(addFile));
+    fi.addEventListener('change', e => {
+      const newFiles = [...e.target.files];
+      fi.value = '';
+
+      // 检查是否与历史记录重复
+      if (newFiles.length > 0 && files.length === 0) {
+        const fileNames = newFiles.map(f => f.name);
+        const duplicate = checkDuplicate(fileNames);
+        if (duplicate) {
+          const confirmed = confirm(
+            `检测到历史记录中存在相同的文件组合：\n` +
+            `项目：${duplicate.project || '未命名'}\n` +
+            `时间：${duplicate.time}\n\n` +
+            `是否继续上传并重新生成评估？`
+          );
+          if (!confirmed) return;
+        }
+      }
+
+      newFiles.forEach(addFile);
+    });
 
     function addFile(f) {
-      files.push(f);
+      const item = { file: f, type: null };
+      files.push(item);
       renderList();
-      // 自动识别字段
+      // 自动识别字段（首个文件时触发一次）
       if (files.length === 1) autoFillFields();
+      // 弹出类型选择，让用户二次确认这个附件是哪一类
+      openTypeModal(files.length - 1);
+    }
+    function typeTagHtml(type, index) {
+      if (!type) {
+        return `<button class="file-type-tag ftt-unset" onclick="chooseType(${index})" title="点击选择附件类型">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          待选择类型
+        </button>`;
+      }
+      const names = { 1: '附件1', 2: '附件2', 3: '附件3' };
+      return `<button class="file-type-tag ftt-${type}" onclick="chooseType(${index})" title="点击修改类型">
+        ${names[type]}
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </button>`;
     }
     function renderList() {
       if (files.length === 0) { fl.style.display = 'none'; return; }
       fl.style.display = 'block';
-      fl.innerHTML = files.map((f, i) => `
-        <div class="file-row">
+      fl.innerHTML = files.map((item, i) => `
+        <div class="file-row${item.type ? '' : ' needs-type'}">
           <div class="file-icon">
             <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           </div>
-          <div class="file-name">${f.name}</div>
-          <div class="file-size mono">${(f.size / 1024).toFixed(1)} KB</div>
+          <div class="file-name">${item.file.name}</div>
+          ${typeTagHtml(item.type, i)}
+          <div class="file-size mono">${(item.file.size / 1024).toFixed(1)} KB</div>
           <button class="btn btn-outline" style="padding:4px 10px;font-size:12px" onclick="removeFile(${i})">移除</button>
         </div>
       `).join('');
@@ -317,6 +558,39 @@
     };
 
     document.getElementById('submitBtn').addEventListener('click', () => {
+      // 校验：必须至少有一个文件，且所有文件都已指定类型
+      if (files.length === 0) {
+        alert('请先上传专利文档后再开始评估');
+        return;
+      }
+      const missingIndex = files.findIndex(f => !f.type);
+      if (missingIndex >= 0) {
+        alert('还有文件未选择附件类型，请为每个文件指定附件1/2/3');
+        openTypeModal(missingIndex);
+        return;
+      }
+
+      // 校验必填字段
+      const required = [
+        { id: 'fProject', name: '技术主题名称' },
+        { id: 'fApplicant', name: '申请人' },
+        { id: 'fInventors', name: '发明人' },
+        { id: 'fEmail', name: '电子邮箱' }
+      ];
+      for (const field of required) {
+        const el = document.getElementById(field.id);
+        const val = el ? el.value.trim() : '';
+        if (!val) {
+          alert(`请填写必填字段：${field.name}`);
+          if (el) {
+            el.focus();
+            el.style.borderColor = '#DC2626';
+            setTimeout(() => { el.style.borderColor = ''; }, 2000);
+          }
+          return;
+        }
+      }
+
       const wrap = document.getElementById('progressWrap');
       const bar = document.getElementById('progressBar');
       const pct = document.getElementById('progressPct');
@@ -339,6 +613,18 @@
         idx++;
         if (idx >= steps.length) {
           clearInterval(timer);
+
+          // 保存历史记录
+          const now = new Date();
+          const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+          const record = {
+            project: document.getElementById('fProject').value.trim() || '未命名项目',
+            applicant: document.getElementById('fApplicant').value.trim(),
+            time: timeStr,
+            files: files.map(f => ({ name: f.file.name, type: f.type }))
+          };
+          saveHistory(record);
+
           setTimeout(() => location.href = 'result.html', 500);
         }
       }, 600);
