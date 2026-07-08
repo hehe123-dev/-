@@ -558,39 +558,6 @@
     };
 
     document.getElementById('submitBtn').addEventListener('click', () => {
-      // 校验：必须至少有一个文件，且所有文件都已指定类型
-      if (files.length === 0) {
-        alert('请先上传专利文档后再开始评估');
-        return;
-      }
-      const missingIndex = files.findIndex(f => !f.type);
-      if (missingIndex >= 0) {
-        alert('还有文件未选择附件类型，请为每个文件指定附件1/2/3');
-        openTypeModal(missingIndex);
-        return;
-      }
-
-      // 校验必填字段
-      const required = [
-        { id: 'fProject', name: '技术主题名称' },
-        { id: 'fApplicant', name: '申请人' },
-        { id: 'fInventors', name: '发明人' },
-        { id: 'fEmail', name: '电子邮箱' }
-      ];
-      for (const field of required) {
-        const el = document.getElementById(field.id);
-        const val = el ? el.value.trim() : '';
-        if (!val) {
-          alert(`请填写必填字段：${field.name}`);
-          if (el) {
-            el.focus();
-            el.style.borderColor = '#DC2626';
-            setTimeout(() => { el.style.borderColor = ''; }, 2000);
-          }
-          return;
-        }
-      }
-
       const wrap = document.getElementById('progressWrap');
       const bar = document.getElementById('progressBar');
       const pct = document.getElementById('progressPct');
